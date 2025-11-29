@@ -1,4 +1,4 @@
-all:
+dev:
   children:
     prometheus:
       hosts:

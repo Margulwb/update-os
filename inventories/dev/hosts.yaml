@@ -1,8 +1,0 @@
-all:
-  children:
-    postgres:
-      hosts: {}
-    kafka:
-      hosts: {}
-    rabbitmq:
-      hosts: {}

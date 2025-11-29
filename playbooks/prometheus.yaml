@@ -3,22 +3,19 @@
   serial: 1
   become: yes
 
-  vars:
-    compose_dir: "/home/mg/zabbix"
-
   tasks:
-
-    - name: Stop Prometheus Docker Compose
-      community.docker.docker_compose:
+    - name: Stop Prometheus container(s)
+      community.docker.docker_compose_v2:
         project_src: "{{ compose_dir }}"
         state: absent
 
-    - name: Wait for Docker to fully stop (no containers running)
-      shell: "docker ps -q"
-      register: docker_ps
+    - name: Wait until Prometheus container stops
+      shell: >
+        docker ps --filter "name={{ prometheus_service_name }}" -q
+      register: prometheus_containers
       retries: 10
       delay: 5
-      until: docker_ps.stdout == ""
+      until: prometheus_containers.stdout == ""
       changed_when: false
 
     - name: Perform system update
@@ -26,17 +23,28 @@
         name: "*"
         state: latest
 
-    - name: Start Prometheus Docker Compose
-      community.docker.docker_compose:
+    - name: Check if system needs restart
+      command: "needs-restarting -r"
+      register: restart_required
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Reboot if required
+      reboot:
+        reboot_timeout: 600
+      when: restart_required.rc == 1
+
+    - name: Start Prometheus container(s)
+      community.docker.docker_compose_v2:
         project_src: "{{ compose_dir }}"
         state: present
 
-    - name: Wait for Prometheus to start
+    - name: Wait for Prometheus to become healthy
       uri:
-        url: "http://localhost:9090/-/healthy"
+        url: "{{ prometheus_health_url }}"
         status_code: 200
-      register: result
+      register: health
       retries: 20
       delay: 5
-      until: result.status == 200
+      until: health.status == 200
       changed_when: false
