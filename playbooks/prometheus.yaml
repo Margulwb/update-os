@@ -1,0 +1,42 @@
+- name: Rolling update of Prometheus Docker Compose nodes
+  hosts: prometheus
+  serial: 1
+  become: yes
+
+  vars:
+    compose_dir: "/home/mg/zabbix"
+
+  tasks:
+
+    - name: Stop Prometheus Docker Compose
+      community.docker.docker_compose:
+        project_src: "{{ compose_dir }}"
+        state: absent
+
+    - name: Wait for Docker to fully stop (no containers running)
+      shell: "docker ps -q"
+      register: docker_ps
+      retries: 10
+      delay: 5
+      until: docker_ps.stdout == ""
+      changed_when: false
+
+    - name: Perform system update
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Start Prometheus Docker Compose
+      community.docker.docker_compose:
+        project_src: "{{ compose_dir }}"
+        state: present
+
+    - name: Wait for Prometheus to start
+      uri:
+        url: "http://localhost:9090/-/healthy"
+        status_code: 200
+      register: result
+      retries: 20
+      delay: 5
+      until: result.status == 200
+      changed_when: false

@@ -1,0 +1,4 @@
+- name: Ensure base packages
+  package:
+    name: "{{ base_packages }}"
+    state: present
