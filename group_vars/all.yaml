@@ -1,4 +1,0 @@
-# ansible_user: mg
-compose_dir: "/home/mg/zabbix"
-prometheus_service_name: "prometheus"
-prometheus_health_url: "http://localhost:9090/-/healthy"

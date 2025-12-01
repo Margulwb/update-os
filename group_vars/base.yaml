@@ -1,5 +1,0 @@
-base_packages:
-  - vim
-  - curl
-  - tar
-  - unzip
