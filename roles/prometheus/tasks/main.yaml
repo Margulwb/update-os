@@ -34,7 +34,7 @@
     url: "{{ prometheus_health_url }}"
     status_code: 200
   register: health
-  retries: 20
-  delay: 5
+  retries: 5
+  delay: 3
   until: health.status == 200
   changed_when: false

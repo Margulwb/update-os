@@ -4,8 +4,8 @@ all:
       hosts:
         dev:
           ansible_host: 10.0.1.139
-        # dev2:
-        #   ansible_host: 10.0.1.140
+        dev2:
+          ansible_host: 10.0.1.140
     grafana:
       hosts:      
         dev3:
