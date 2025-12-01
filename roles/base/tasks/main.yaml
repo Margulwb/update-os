@@ -1,0 +1,13 @@
+- name: Perform system update
+  yum:
+    name: "*"
+    state: latest
+  notify:
+    - Reboot if required
+
+- name: Check if system needs restart
+  command: "needs-restarting -r"
+  register: restart_required
+  ignore_errors: yes
+  changed_when: false
+

@@ -2,53 +2,5 @@
   hosts: prometheus
   serial: 1
   become: yes
-
-  tasks:
-    - name: Read Prometheus variables
-      include_vars:
-        file: ../group_vars/prometheus.yml
-
-    - name: Stop Prometheus container(s)
-      community.docker.docker_compose_v2:
-        project_src: "{{ compose_dir }}"
-        state: absent
-
-    - name: Wait until Prometheus container stops
-      shell: >
-        docker ps --filter "name={{ prometheus_service_name }}" -q
-      register: prometheus_containers
-      retries: 10
-      delay: 5
-      until: prometheus_containers.stdout == ""
-      changed_when: false
-
-    - name: Perform system update
-      yum:
-        name: "*"
-        state: latest
-
-    - name: Check if system needs restart
-      command: "needs-restarting -r"
-      register: restart_required
-      ignore_errors: yes
-      changed_when: false
-
-    - name: Reboot if required
-      reboot:
-        reboot_timeout: 600
-      when: restart_required.rc == 1
-
-    - name: Start Prometheus container(s)
-      community.docker.docker_compose_v2:
-        project_src: "{{ compose_dir }}"
-        state: present
-
-    - name: Wait for Prometheus to become healthy
-      uri:
-        url: "{{ prometheus_health_url }}"
-        status_code: 200
-      register: health
-      retries: 20
-      delay: 5
-      until: health.status == 200
-      changed_when: false
+  roles:
+    - prometheus

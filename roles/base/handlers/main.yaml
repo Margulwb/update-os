@@ -1,0 +1,4 @@
+- name: Reboot if required
+  reboot:
+    reboot_timeout: 600
+  when: restart_required.rc == 1
