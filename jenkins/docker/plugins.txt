@@ -1,2 +1,8 @@
-job-dsl
 configuration-as-code
+job-dsl
+git
+workflow-aggregator
+credentials-binding
+branch-api
+workflow-multibranch
+git-client
