@@ -1,0 +1,18 @@
+---
+- name: Create project directory
+  file:
+    path: "{{ jenkins_project_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Render JCasC configuration from template
+  template:
+    src: casc.yaml.j2
+    dest: "{{ jenkins_project_path }}/casc.yaml"
+    mode: '0644'
+
+# - name: Start Jenkins and build custom image
+#   community.docker.docker_compose_v2:
+#     project_src: "{{ docker_files_path }}"
+#     state: present
+#     build: always  # To wymusi zbudowanie obrazu z Twojego Dockerfile

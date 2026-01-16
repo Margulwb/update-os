@@ -1,0 +1,48 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "{{ admin_password }}"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "github-token"
+              username: "Margulwb"
+              password: "{{ github_token }}"
+jobs:
+  - script: >
+jobs:
+  - script: >
+      multibranchPipelineJob('Mój-Projekt-Multibranch') {
+          branchSources {
+              branchSource {
+                  source {
+                      git {
+                          remote('https://github.com/Margulwb/update-os.git')
+                          credentialsId('github-token')
+                          traits {
+                              headWildcardFilter {
+                                  includes('main')
+                                  excludes('')
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          triggers {
+              periodicFolderTrigger {
+                  interval('1m') 
+              }
+          }
+          orphanedItemStrategy {
+              discardOldItems {
+                  numToKeep(10)
+              }
+          }
+      }
