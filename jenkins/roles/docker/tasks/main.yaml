@@ -34,4 +34,4 @@
     state: present
     build: always
     wait: true
-    wait_timeout: 120
+    wait_timeout: 360

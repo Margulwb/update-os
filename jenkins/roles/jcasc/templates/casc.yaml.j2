@@ -19,7 +19,6 @@ credentials:
               id: "github-token"
               username: "Margulwb"
               password: "{{ github_token }}"
-
 jobs:
   - script: >
       multibranchPipelineJob('Update-OS-generated') {
@@ -41,12 +40,18 @@ jobs:
           }
           triggers {
               periodicFolderTrigger {
-                  interval('1m') 
+                  interval('1h') 
               }
           }
           orphanedItemStrategy {
               discardOldItems {
+                  daysToKeep(7)
                   numToKeep(10)
+              }
+          }
+        factory {
+              workflowBranchProjectFactory {
+                  scriptPath('Jenkinsfile')
               }
           }
       }
