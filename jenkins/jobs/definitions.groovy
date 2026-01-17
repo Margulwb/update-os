@@ -9,7 +9,7 @@ pipelineJob('ansible-folder/deploy-job') {
                         url('https://github.com/Margulwb/update-os.git')
                         credentials('github-token')
                     }
-                    branches('feature/*')
+                    branches('feature/asdasd')
                 }
             }
             scriptPath('Jenkinsfile.ansible-playbook')
