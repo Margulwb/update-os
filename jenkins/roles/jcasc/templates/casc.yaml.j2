@@ -14,8 +14,7 @@ credentials:
               id: "github-token"
               username: "Margulwb"
               password: "{{ github_token }}"
-jobs:
-  - script: >
+
 jobs:
   - script: >
       multibranchPipelineJob('Mój-Projekt-Multibranch') {
@@ -27,7 +26,7 @@ jobs:
                           credentialsId('github-token')
                           traits {
                               headWildcardFilter {
-                                  includes('main')
+                                  includes('feature/jenkinsfile-generate')
                                   excludes('')
                               }
                           }

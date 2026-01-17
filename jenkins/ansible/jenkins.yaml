@@ -1,8 +1,0 @@
-- name: Setup Jenkins with JCasC
-  hosts: jenkins_server
-  vars_files:
-    - group_vars/secrets/jenkins.yml
-    - group_vars/all.yaml
-  roles:
-    - Jcasc
-    

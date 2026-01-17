@@ -1,4 +1,5 @@
 jenkins_project_path: "/home/mg/jenkins-data" 
+jenkins_docker_path: "{{ jenkins_project_path }}/docker"
 docker_files_path: "/home/mg/githube/update-os/jenkins/docker"
 project_name: "Update-OS"
 git_repo_url: "https://github.com/Margulwb/update-os.git"

@@ -1,12 +1,11 @@
 services:
   jenkins:
-    build: .  # To wskazuje na Dockerfile w tym samym folderze
+    build: .
     container_name: jenkins-server
     ports:
       - "8080:8080"
     volumes:
       - jenkins_home:/var/jenkins_home
-      # Kluczowy moment: montujemy plik, który stworzył Ansible
       - /home/mg/jenkins-data/casc.yaml:/var/jenkins_home/casc.yaml:ro
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yaml
