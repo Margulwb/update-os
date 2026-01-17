@@ -24,7 +24,7 @@ pipeline {
                         }
                     """.stripIndent(),
                     sandbox: false,
-                    // lookupStrategy: 'JENKINS_ROOT' // To pomaga przy multibranch
+                    // lookupStrategy: 'JENKINS_ROOT' // To pomaga przy multibranch 
                 )
             }
         }
