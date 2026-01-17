@@ -23,7 +23,7 @@ pipeline {
                             }
                         }
                     """.stripIndent(),
-                    sandbox: false,
+                    sandbox: true,
                     removedJobAction: 'DELETE',
                     removedViewAction: 'DELETE',
                     lookupStrategy: 'JENKINS_ROOT'
