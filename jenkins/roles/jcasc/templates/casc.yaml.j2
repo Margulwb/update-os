@@ -26,14 +26,15 @@ jobs:
               branchSource {
                   source {
                       git {
-                          remote('https://github.com/Margulwb/update-os.git')
-                          credentialsId('github-token')
-                          traits {
-                              headWildcardFilter {
-                                  includes('feature/jenkinsfile-generate')
-                                  excludes('')
-                              }
-                          }
+                        remote('https://github.com/Margulwb/update-os.git')
+                        credentialsId('github-token')
+                        traits {
+                            branchDiscoveryTrait()
+                            headWildcardFilter {
+                                includes('feature/jenkinsfile-generate')
+                                excludes('')
+                            }
+                        }
                       }
                   }
               }
