@@ -12,10 +12,10 @@ pipeline {
                                     scm {
                                         git {
                                             remote {
-                                                url('https://github.com/uzytkownik/repo.git')
-                                                credentials('id-gita')
+                                                url('https://github.com/Margulwb/update-os.git')
+                                                credentials('github-token')
                                             }
-                                            branches('main')
+                                            branches('feature/jenkinsfile-generate')
                                         }
                                     }
                                     scriptPath('Jenkinsfile')
@@ -24,7 +24,9 @@ pipeline {
                         }
                     """.stripIndent(),
                     sandbox: false,
-                    // lookupStrategy: 'JENKINS_ROOT' // To pomaga przy multibranch 
+                    removedJobAction: 'DELETE',
+                    removedViewAction: 'DELETE',
+                    lookupStrategy: 'JENKINS_ROOT'
                 )
             }
         }
