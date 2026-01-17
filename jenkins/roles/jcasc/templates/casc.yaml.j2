@@ -55,4 +55,9 @@ jobs:
                   scriptPath('Jenkinsfile')
               }
           }
+        configure { node ->
+              node / 'properties' / 'javaposse.jobdsl.plugin.ManagementJobProperty' {
+                  useScriptSecurity('false')
+              }
+          }
       }
