@@ -1,15 +1,21 @@
 services:
   jenkins:
     build: .
+    user: "1004:1004"
     container_name: jenkins-server
     ports:
       - "8080:8080"
     volumes:
-      - jenkins_home:/var/jenkins_home
-      - /home/mg/jenkins-data/casc.yaml:/var/jenkins_home/casc.yaml:ro
+      - /home/mg/jenkins-data:/var/jenkins_home
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yaml
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost:8080/login"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+          start_period: 30s
 
 volumes:
   jenkins_home:

@@ -4,11 +4,15 @@
     path: "{{ jenkins_project_path }}"
     state: directory
     mode: '0755'
+    owner: 1004
+    group: 1004
 
 - name: Render JCasC configuration from template
   template:
     src: casc.yaml.j2
     dest: "{{ jenkins_project_path }}/casc.yaml"
+    owner: 1004
+    group: 1004
     mode: '0644'
 
 # - name: Start Jenkins and build custom image

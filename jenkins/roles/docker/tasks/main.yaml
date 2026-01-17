@@ -1,9 +1,14 @@
 ---
+- name: Setup Jenkins users and groups
+  include_tasks: user.yaml
+
 - name: Create project directory
   file:
     path: "{{ jenkins_docker_path }}"
     state: directory
     mode: '0755'
+    owner: 1004
+    group: 1004
 
 - name: Render docker-compose configuration
   template:
@@ -28,3 +33,5 @@
     project_src: "{{ jenkins_docker_path }}"
     state: present
     build: always
+    wait: true
+    wait_timeout: 120

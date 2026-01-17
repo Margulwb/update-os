@@ -1,0 +1,24 @@
+- name: Create jenkins group on host
+  become: true
+  group:
+    name: jenkins_host
+    gid: 1004
+    state: present
+
+- name: Create jenkins user on host
+  become: true
+  user:
+    name: jenkins_host
+    uid: 1004
+    group: jenkins_host
+    shell: /sbin/nologin
+    state: present
+
+- name: Ensure jenkins-data directory has correct ownership
+  file:
+    path: /home/mg/jenkins-data
+    state: directory
+    owner: 1004
+    group: 1004
+    mode: '0755'
+    recurse: yes
