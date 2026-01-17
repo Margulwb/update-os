@@ -15,7 +15,7 @@ pipeline {
                                                 url('https://github.com/Margulwb/update-os.git')
                                                 credentials('github-token')
                                             }
-                                            branches('feature/jenkinsfile-generate')
+                                            branches('feature/*')
                                         }
                                     }
                                     scriptPath('Jenkinsfile')
