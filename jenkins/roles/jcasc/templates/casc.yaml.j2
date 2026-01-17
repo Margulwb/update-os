@@ -11,10 +11,6 @@ jenkins:
   crumbIssuer:
     standard: {}
 
-unclassified:
-  jobDslProjectConfiguration:
-    useScriptSecurity: false
-
 credentials:
   system:
     domainCredentials:
@@ -24,6 +20,36 @@ credentials:
               username: "Margulwb"
               password: "{{ github_token }}"
 jobs:
+  - script: >
+      freeStyleJob('Seed-Job-Admin') {
+          displayName('PRO: Generator Infrastruktury (Seed)')
+          description('Ten job skanuje repozytorium i tworzy joby dla Ansible')
+          
+          scm {
+              git {
+                  remote {
+                      url('https://github.com/Margulwb/update-os.git')
+                      credentials('github-token')
+                  }
+                  branches('feature/jenkinsfile-generate')
+              }
+          }
+          
+          steps {
+              jobDsl {
+                  targets 'jobs/definitions.groovy'
+                  removedJobAction('DELETE')
+                  removedViewAction('DELETE')
+                  lookupStrategy('JENKINS_ROOT')
+                  // W Freestyle Jobie domyślnie NIE zaznaczamy "Use Groovy Sandbox"
+                  // Dzięki temu skrypt ma pełne uprawnienia bez Approve!
+              }
+          }
+          
+          triggers {
+              scm('H/5 * * * *') // Sprawdzaj zmiany w repo co 5 minut
+          }
+      }
   - script: >
       multibranchPipelineJob('Update-OS-generated') {
           branchSources {
