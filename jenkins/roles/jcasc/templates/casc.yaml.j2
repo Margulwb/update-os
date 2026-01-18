@@ -4,7 +4,7 @@ jenkins:
       allowsSignup: false
       users:
         - id: "admin"
-          password: "{{admin_password}}"
+          password: "{{ admin_password }}"
   authorizationStrategy:
     fullControlOnceLoggedIn:
       allowAnonymousRead: false
@@ -19,6 +19,10 @@ credentials:
               id: "github-token"
               username: "Margulwb"
               password: "{{ github_token }}"
+          - usernamePassword:
+              id: "ssh-server-login"
+              username: "root"
+              password: "{{ ssh_root_password }}"
 jobs:
   - script: >
       multibranchPipelineJob('Update-OS-generated') {
