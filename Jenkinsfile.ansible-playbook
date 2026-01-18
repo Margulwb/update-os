@@ -1,6 +1,6 @@
 pipeline {
-    options { ansiColor('xterm') }
-    
+    options { ansiColor('xterm-256color') }
+
     agent {
         docker {
             image 'ansible:1.0'
