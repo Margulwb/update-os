@@ -18,7 +18,7 @@ pipeline {
                                             branches('feature/*')
                                         }
                                     }
-                                    scriptPath('Jenkinsfile')
+                                    scriptPath('Jenkinsfile.ansible-playbook')
                                 }
                             }
                         }

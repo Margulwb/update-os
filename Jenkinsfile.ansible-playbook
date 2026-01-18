@@ -1,10 +1,38 @@
 pipeline {
     agent any
+
     stages {
-        stage('test') {
+        stage('Run Ansible Raw') {
             steps {
-                echo 'test'
+                sh "ls -la"
+                withCredentials([usernamePassword(credentialsId: 'ssh-server-login', passwordVariable: 'SSH_PASS', usernameVariable: 'SSH_USER')]) {
+                    sh """
+                    export ANSIBLE_HOST_KEY_CHECKING=False
+                    ansible-playbook -i update-os/inventories/dev/dev.yaml update-os/playbooks/prometheus.yaml\
+                    -u ${SSH_USER} \
+                    -e "ansible_password=${SSH_PASS}"
+                    """
+                }
             }
+        }
+
+        stage('Run Ansible Playbook') {
+            steps {
+                sh "ls -la"
+                ansiblePlaybook(
+                    playbook: 'update-os/playbooks/prometheus.yaml',
+                    inventory: "update-os/inventories/dev/dev.yaml",
+                    credentialsId: 'ssh-server-login',
+                    disableHostKeyChecking: true, 
+                    colorized: true
+                )
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
