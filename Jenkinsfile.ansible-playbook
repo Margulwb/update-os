@@ -1,5 +1,8 @@
 pipeline {
-    options { ansiColor('xterm-256color') }
+    options { 
+        timestamps()
+        ansiColor('xterm-256color') 
+    }
 
     agent {
         docker {
