@@ -1,17 +1,16 @@
 - name: Create jenkins group on host
   become: true
   group:
-    name: jenkins_host
+    name: jenkins
     gid: 1004
     state: present
 
 - name: Create jenkins user on host
   become: true
   user:
-    name: jenkins_host
+    name: jenkins
     uid: 1004
-    group: jenkins_host
-    shell: /sbin/nologin
+    group: jenkins
     state: present
 
 - name: Ensure jenkins-data directory has correct ownership

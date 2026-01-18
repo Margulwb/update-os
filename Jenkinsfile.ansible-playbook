@@ -1,5 +1,10 @@
 pipeline {
-    agent { docker { image 'ansible:1.0'} }
+    agent {
+        docker {
+            image 'ansible:1.0'
+            args '-e HOME=${WORKSPACE}'
+        }
+    }
 
     stages {
         stage('Run Ansible Raw') {
