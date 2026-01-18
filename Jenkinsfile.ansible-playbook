@@ -14,7 +14,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'ssh-server-login', passwordVariable: 'SSH_PASS', usernameVariable: 'SSH_USER')]) {
                     // export ANSIBLE_HOST_KEY_CHECKING=False
                     sh """
-                    export ANSIBLE_CONFIG=\${WORKSPACE}/ansible.cfg
+                    export ANSIBLE_CONFIG=\${WORKSPACE}/update-os/ansible.cfg
                     ansible-playbook -i update-os/inventories/dev/dev.yaml update-os/update-os.yaml \
                     -u ${SSH_USER} \
                     -e "ansible_password=${SSH_PASS}"
