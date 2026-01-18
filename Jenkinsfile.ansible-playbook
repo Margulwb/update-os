@@ -13,8 +13,7 @@ pipeline {
                 sh "ls -la"
                 withCredentials([usernamePassword(credentialsId: 'ssh-server-login', passwordVariable: 'SSH_PASS', usernameVariable: 'SSH_USER')]) {
                     sh """
-                    export ANSIBLE_HOST_KEY_CHECKING=False
-                    ansible-playbook -i update-os/inventories/dev/dev.yaml update-os/playbooks/prometheus.yaml\
+                    ansible-playbook -i update-os/inventories/dev/dev.yaml update-os/update-os.yaml \
                     -u ${SSH_USER} \
                     -e "ansible_password=${SSH_PASS}"
                     """

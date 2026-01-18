@@ -1,8 +1,4 @@
 
-- name: Read Prometheus variables
-  include_vars:
-    file: ../group_vars/prometheus.yml
-
 - name: Stop Prometheus container(s)
   community.docker.docker_compose_v2:
     project_src: "{{ compose_dir }}"

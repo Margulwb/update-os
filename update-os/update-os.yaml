@@ -1,0 +1,13 @@
+- name: Rolling yum update
+  hosts: all
+  serial: 1
+  become: yes
+  vars:
+    host_role_map:
+      prometheus: prometheus
+  tasks:
+  - name: Include role for this host
+    include_role:
+      name: "{{ host_role_map[item] }}"
+    loop: "{{ group_names }}"
+    when: item in host_role_map
