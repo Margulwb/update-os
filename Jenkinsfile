@@ -7,9 +7,6 @@ pipeline {
                     scriptText: """
                         folder('ansible-folder')
                         pipelineJob('ansible-folder/deploy-job') {
-                            parameters {
-                                booleanParam('RUN_ANSIBLE', true)
-                            }
                             definition {
                                 cpsScm {
                                     scm {
