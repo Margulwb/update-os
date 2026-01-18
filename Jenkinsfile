@@ -7,6 +7,9 @@ pipeline {
                     scriptText: """
                         folder('ansible-folder')
                         pipelineJob('ansible-folder/deploy-job') {
+                            parameters {
+                                booleanParam('RUN_ANSIBLE', true)
+                            }
                             definition {
                                 cpsScm {
                                     scm {
@@ -22,6 +25,7 @@ pipeline {
                                 }
                             }
                         }
+                        queue('ansible-folder/deploy-job')
                     """.stripIndent(),
                     sandbox: true,
                     removedJobAction: 'DELETE',

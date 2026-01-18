@@ -1,8 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker { 
+            image 'ansible:1.0'
+            // args '-v /root/.ssh:/home/jenkins/.ssh'
+        }
+    }
 
     stages {
         stage('Run Ansible Raw') {
+            when { expression { params.RUN_ANSIBLE == null || params.RUN_ANSIBLE == true } }
             steps {
                 sh "ls -la"
                 withCredentials([usernamePassword(credentialsId: 'ssh-server-login', passwordVariable: 'SSH_PASS', usernameVariable: 'SSH_USER')]) {
@@ -16,17 +22,17 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook') {
-            steps {
-                sh "ls -la"
-                ansiblePlaybook(
-                    playbook: 'update-os/playbooks/prometheus.yaml',
-                    inventory: "update-os/inventories/dev/dev.yaml",
-                    credentialsId: 'ssh-server-login',
-                    disableHostKeyChecking: true, 
-                    colorized: true
-                )
-            }
-        }
+        // stage('Run Ansible Playbook') {
+        //     steps {
+        //         sh "ls -la"
+        //         ansiblePlaybook(
+        //             playbook: 'update-os/playbooks/prometheus.yaml',
+        //             inventory: "update-os/inventories/dev/dev.yaml",
+        //             credentialsId: 'ssh-server-login',
+        //             disableHostKeyChecking: true, 
+        //             colorized: true
+        //         )
+        //     }
+        // }
     }
 }
