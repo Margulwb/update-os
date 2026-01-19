@@ -108,3 +108,7 @@ Fill in the files in `group_vars/secrets/` and `group_vars/all.yaml` with the ap
 
 ## License
 MIT
+
+def config = GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class)
+config.useScriptSecurity = false
+config.save()
