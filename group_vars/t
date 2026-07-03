@@ -3,49 +3,43 @@ multibranchPipelineJob('grafana-check-config') {
     description('Pipeline automatycznie sprawdzający konfigurację dla PR i branchy')
 
     branchSources {
-        bitbucket {
-            id('grafana-dbi-repo')
-            // Adres URL Twojego Bitbucketa wyciągnięty z 1000002281.jpg
-            serverUrl('https://bitbucket.mbank.pl') 
-            credentialsId('bitbucket-jenkins-ssh-or-token') // ID poświadczeń w Jenkinsie
-            repoOwner('OL')                                  // Klucz projektu (Project Key)
-            repository('grafana-dbi')                        // Nazwa repozytorium
-            
-            traits {
-                // 1. Wykrywanie zwykłych gałęzi (opcjonalne, ale zazwyczaj potrzebne)
-                bitbucketBranchDiscoveryTrait {
-                    strategyId(3) // 3 = Wszystkie gałęzie
+        branchSource {
+            source {
+                bitbucket {
+                    id('grafana-dbi-repo')
+                    serverUrl('https://bitbucket.mbank.pl') 
+                    credentialsId('bitbucket-jenkins-ssh-or-token')
+                    repoOwner('OL')                                  
+                    repository('grafana-dbi')                        
+                    
+                    traits {
+                        // Wykrywanie zwykłych gałęzi
+                        bitbucketBranchDiscoveryTrait {
+                            strategyId(3) // 3 = Wszystkie gałęzie
+                        }
+                        
+                        // Wykrywanie Pull Requestów
+                        bitbucketPullRequestDiscoveryTrait {
+                            strategyId(1) // 1 = Kod PR po zmergowaniu w locie
+                        }
+                    }
                 }
-                
-                // 2. KLUCZOWE: Wykrywanie Pull Requestów z oryginalnego repozytorium (Origin)
-                bitbucketPullRequestDiscoveryTrait {
-                    strategyId(1) // 1 = Kod PR po zmergowaniu w locie z gałęzią docelową (zalecane)
-                                  // 2 = Kod bezpośrednio z gałęzi źródłowej PR
-                }
-                
-                // 3. Jeśli używasz forków (opcjonalnie)
-                // bitbucketForkPullRequestDiscoveryTrait {
-                //     strategyId(1)
-                //     trustId(2)
-                // }
             }
         }
     }
 
     factory {
         workflowBranchProjectFactory {
-            scriptPath('Jenkinsfile') // Ścieżka do pliku z potokiem w Twoim repo
+            scriptPath('Jenkinsfile')
         }
     }
 
-    // Automatyczne czyszczenie starych / usuniętych branchy/PR-ów z widoku Jenkinsa
     orphanedItemStrategy {
         discardWatcher {
             numToKeep(30)
         }
     }
 
-    // Skanowanie awaryjne (np. jeśli webhook nie zadziała), raz na godzinę
     triggers {
         periodicFolderTrigger {
             interval('1h')
